@@ -3,6 +3,7 @@ import { getCookie, setCookie, deleteCookie } from 'hono/cookie';
 import { isBulleted, stripBullet } from '../src/lib/bullets';
 import type { UserHub } from './hub';
 import { handleWebhook, jstToday, verifySignature, weeklyPush } from './line';
+import { feedFor } from './ical';
 export { UserHub } from './hub';
 
 type Env = {
@@ -782,6 +783,39 @@ app.patch('/api/line/links/:id', async (c) => {
 app.delete('/api/line/links/:id', async (c) => {
   const r = await c.env.DB.prepare('DELETE FROM line_links WHERE id = ? AND user_id = ?').bind(c.req.param('id'), c.get('user').id).run();
   return r.meta.changes ? c.json({ ok: true }) : c.json({ error: 'not found' }, 404);
+});
+
+// ---------- カレンダー連携 ----------
+const feedUrl = (c: { req: { url: string } }, token: string) => new URL(`/cal/${token}.ics`, c.req.url).toString();
+
+/** The subscribed calendar. Public by design: the long random token in the URL is the key. */
+app.get('/cal/:file', async (c) => {
+  const token = c.req.param('file').replace(/\.ics$/, '');
+  if (!/^[A-Za-z0-9_-]{20,64}$/.test(token)) return c.notFound();
+  const feed = await c.env.DB.prepare('SELECT user_id FROM calendar_feeds WHERE token = ?').bind(token).first<{ user_id: string }>();
+  if (!feed) return c.notFound();
+  const body = await feedFor(c.env.DB, feed.user_id, new URL('/', c.req.url).toString());
+  return c.body(body, 200, { 'content-type': 'text/calendar; charset=utf-8', 'cache-control': 'private, max-age=300', 'content-disposition': 'inline; filename="task-honbu.ics"' });
+});
+/** The app's カレンダー連携 screen: this account's feed URL, if made. */
+app.get('/api/calendar-feed', async (c) => {
+  const row = await c.env.DB.prepare('SELECT token, created_at FROM calendar_feeds WHERE user_id = ?').bind(c.get('user').id).first<{ token: string; created_at: number }>();
+  return c.json(row ? { url: feedUrl(c, row.token), created_at: row.created_at } : { url: null });
+});
+/** Make the feed URL, or a new one in place of the old (the old one stops working). */
+app.post('/api/calendar-feed', async (c) => {
+  const token = randomToken(24);
+  const now = Date.now();
+  await c.env.DB.prepare(
+    'INSERT INTO calendar_feeds (user_id, token, created_at) VALUES (?, ?, ?) ON CONFLICT(user_id) DO UPDATE SET token = excluded.token, created_at = excluded.created_at',
+  )
+    .bind(c.get('user').id, token, now)
+    .run();
+  return c.json({ url: feedUrl(c, token), created_at: now });
+});
+app.delete('/api/calendar-feed', async (c) => {
+  await c.env.DB.prepare('DELETE FROM calendar_feeds WHERE user_id = ?').bind(c.get('user').id).run();
+  return c.json({ ok: true });
 });
 
 // Google Search Console ownership file (needed to list the domain as an OAuth authorized domain).

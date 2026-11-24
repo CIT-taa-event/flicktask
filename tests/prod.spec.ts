@@ -28,6 +28,11 @@ test('production: the LINE webhook refuses unsigned calls and the test-only push
   expect((await request.get('/api/line')).status()).toBe(401);
 });
 
+test('production: calendar feeds need the right token', async ({ request }) => {
+  expect((await request.get('/cal/not-a-real-token-1234567890.ics')).status()).toBe(404);
+  expect((await request.get('/api/calendar-feed')).status()).toBe(401);
+});
+
 test('production: API requires a session', async ({ request }) => {
   expect((await request.get('/api/me')).status()).toBe(401);
   expect((await request.get('/api/tasks')).status()).toBe(401);
