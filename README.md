@@ -79,7 +79,7 @@ OAuth 同意画面は「本番環境」で公開しており、どの Google ア
 独自ドメインは使わず、`workers.dev` が Public Suffix List に載っていることを利用して `junjun-tama.workers.dev` を承認済みドメインにしています。
 
 - 所有確認: Google Search Console の URL プレフィックス プロパティ `https://flicktask.junjun-tama.workers.dev/` を HTML ファイルで確認。
-  確認ファイル `/googlefa52df59a4a2a0d4.html` は Worker が返します（静的アセットだと `.html` なしの URL へリダイレクトされるため）。消すと確認が外れます。
+  確認ファイル `/googlefa52df59a4a2a0d4.html`（作成者）と `/google79bab37b72dee126.html`（幹部の管理用アカウント）は Worker が返します（静的アセットだと `.html` なしの URL へリダイレクトされるため）。消すとその人の確認が外れます。
 - ブランディング: ホームページ `/`、プライバシーポリシー [`/privacy`](public/privacy.html)、利用規約 [`/terms`](public/terms.html)。
 
 ## LINE ボット

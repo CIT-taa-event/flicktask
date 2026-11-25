@@ -818,10 +818,11 @@ app.delete('/api/calendar-feed', async (c) => {
   return c.json({ ok: true });
 });
 
-// Google Search Console ownership file (needed to list the domain as an OAuth authorized domain).
-// Served by the Worker because static assets would redirect the .html path to an extensionless URL.
-const SITE_VERIFICATION = 'googlefa52df59a4a2a0d4.html';
-app.get(`/${SITE_VERIFICATION}`, (c) => c.html(`google-site-verification: ${SITE_VERIFICATION}`));
+// Google Search Console ownership files (needed to list the domain as an OAuth authorized domain), one per verified owner:
+// the original developer's, and the 幹部 shared admin account's (so ownership survives the handover).
+// Served by the Worker because static assets would redirect the .html path to an extensionless URL. Removing one un-verifies that owner.
+const SITE_VERIFICATIONS = ['googlefa52df59a4a2a0d4.html', 'google79bab37b72dee126.html'];
+for (const file of SITE_VERIFICATIONS) app.get(`/${file}`, (c) => c.html(`google-site-verification: ${file}`));
 
 app.all('/api/*', (c) => c.json({ error: 'not found' }, 404));
 
