@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Task本部 管理者向け引継ぎ書</title>
+<!-- generated from docs/HANDOVER.md by scripts/handover-html.mjs — edit the .md, then run: npm run handover:html -->
+<style>
+  :root { --bg: #f6f6f6; --paper: #ffffff; --text: #1b1b1b; --sub: #555; --muted: #8a8a8a; --line: #e4e4e4; --accent: #2f5fd0; --code: #f0f0f0; --head: #fafafa; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #0b0b0b; --paper: #151515; --text: #ececec; --sub: #b4b4b4; --muted: #808080; --line: #2a2a2a; --accent: #8ea8ff; --code: #222; --head: #1b1b1b; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.8 "Noto Sans JP", "Hiragino Sans", "Yu Gothic UI", "Meiryo", system-ui, sans-serif; }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 32px 16px 64px; }
+  .paper { background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 36px 40px; }
+  h1 { margin: 0 0 8px; font-size: 26px; line-height: 1.4; }
+  h2 { margin: 40px 0 12px; padding-bottom: 6px; font-size: 20px; border-bottom: 2px solid var(--line); }
+  h3 { margin: 26px 0 8px; font-size: 16.5px; }
+  p { margin: 10px 0; }
+  a { color: var(--accent); overflow-wrap: anywhere; }
+  code { padding: 1px 6px; border-radius: 6px; background: var(--code); font: 13px/1.6 ui-monospace, "Cascadia Mono", Consolas, monospace; overflow-wrap: anywhere; }
+  ul, ol { margin: 8px 0; padding-left: 1.5em; }
+  li { margin: 3px 0; }
+  ul.checks { list-style: none; padding-left: 0.2em; }
+  ul.checks input { width: 16px; height: 16px; vertical-align: -2px; margin-right: 6px; }
+  hr { border: 0; border-top: 1px solid var(--line); margin: 28px 0; }
+  .table { overflow-x: auto; margin: 12px 0; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  th, td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+  th { background: var(--head); white-space: nowrap; }
+  nav.toc { margin: 18px 0 8px; padding: 14px 18px; border-radius: 12px; background: var(--head); border: 1px solid var(--line); font-size: 14px; }
+  nav.toc b { display: block; margin-bottom: 4px; }
+  nav.toc ol { margin: 0; }
+  .foot { margin-top: 18px; font-size: 12px; color: var(--muted); text-align: center; }
+  @media (max-width: 640px) { .paper { padding: 22px 16px; border-radius: 12px; } h1 { font-size: 22px; } }
+  @media print { body { background: #fff; color: #000; } .wrap { padding: 0; max-width: none; } .paper { border: 0; padding: 0; } nav.toc { break-after: avoid; } h2, h3 { break-after: avoid; } tr { break-inside: avoid; } a { color: #000; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+<main class="paper">
+<h1>Task本部 管理者向け引継ぎ書</h1>
+<nav class="toc"><b>目次</b><ol><li><a href="#1-まず知っておくこと3行">まず知っておくこと（3行）</a></li><li><a href="#2-どこに何があるか">どこに何があるか</a></li><li><a href="#3-年度替わりにやること">年度替わりにやること</a></li><li><a href="#4-困ったとき">困ったとき</a></li><li><a href="#5-直したいとき後任のpcで">直したいとき（後任のPCで）</a></li><li><a href="#6-アプリでできること覚え書き">アプリでできること（覚え書き）</a></li><li><a href="#7-引継ぎの状況2026年12月">引継ぎの状況（2026年12月）</a></li><li><a href="#8-管理者の交代メモ">管理者の交代メモ</a></li></ol></nav>
+<p>体育会本部のタスク管理アプリ「Task本部」を、作った人がいなくても動かし続け、直していくための文書です。<br /><strong>このリポジトリは公開されています。パスワード・合言葉・鍵の値はここに書かないでください</strong>（幹部の非公開の引継ぎ資料で管理）。</p>
+<ul><li>アプリ: <a href="https://flicktask.junjun-tama.workers.dev">https://flicktask.junjun-tama.workers.dev</a></li><li>技術的な詳細（構成・開発・デプロイのコマンド）: <a href="https://github.com/CIT-taa-event/flicktask/blob/main/README.md">README.md</a></li></ul>
+<hr />
+<h2 id="1-まず知っておくこと3行">1. まず知っておくこと（3行）</h2>
+<ol><li>アプリは <strong>Cloudflare</strong> という会社のサーバーで、24時間勝手に動いています。普段の管理作業はありません。</li><li>毎日・毎週の自動処理（着手目安日で進行中へ、月曜の LINE まとめ）も、サーバーが勝手にやります。</li><li>管理者が手を動かすのは「<strong>何か壊れたとき</strong>」「<strong>機能を変えたいとき</strong>」「<strong>年度替わり</strong>」だけです。</li></ol>
+<h2 id="2-どこに何があるか">2. どこに何があるか</h2>
+<p>すべて <strong>幹部の管理用の共有Googleアカウント</strong> で入れるようにしてあります。<br />大学の組織アカウントは Search Console などが使えないため、管理には組織の制限がない方の共有アカウントを使っています（どちらのアカウントかは非公開の引継ぎ資料に記載）。<br />アプリへのログイン自体は、普段の共有アカウントで構いません。</p>
+<div class="table"><table><thead><tr><th>サービス</th><th>何をしているか</th><th>入り口</th></tr></thead><tbody><tr><td>Cloudflare</td><td>アプリ本体・データベース（D1）・自動処理・各種の鍵</td><td><a href="https://dash.cloudflare.com">https://dash.cloudflare.com</a> → Workers &amp; Pages → <code>flicktask</code></td></tr><tr><td>Google Cloud</td><td>「Googleでログイン」の設定（OAuth クライアント）</td><td><a href="https://console.cloud.google.com">https://console.cloud.google.com</a> → プロジェクト番号 886333017912 → Google Auth Platform</td></tr><tr><td>Google Search Console</td><td>ログイン設定に必要な「サイトの持ち主」の証明</td><td><a href="https://search.google.com/search-console">https://search.google.com/search-console</a> → <code>https://flicktask.junjun-tama.workers.dev/</code></td></tr><tr><td>GitHub</td><td>プログラムの保管場所（このリポジトリ）</td><td><a href="https://github.com/CIT-taa-event/flicktask">https://github.com/CIT-taa-event/flicktask</a> （組織 <code>CIT-taa-event</code> の持ち主は管理用アカウント）</td></tr><tr><td>LINE Developers / Official Account Manager</td><td>LINE ボット「タスク本部」</td><td><a href="https://developers.line.biz/console/">https://developers.line.biz/console/</a> ・ <a href="https://manager.line.biz/">https://manager.line.biz/</a></td></tr></tbody></table></div>
+<p>アプリの URL（<code>junjun-tama.workers.dev</code>）は作った人の名前が入っていますが、<strong>変えないでください</strong>。<br />変えると Google のログイン設定・LINE の Webhook・カレンダー連携の登録を全部やり直すことになります。</p>
+<h3 id="サーバーに登録してある鍵値はここに書かない">サーバーに登録してある鍵（値はここに書かない）</h3>
+<p>Cloudflare の <code>flicktask</code> → 設定 → 変数とシークレット に入っています。</p>
+<div class="table"><table><thead><tr><th>名前</th><th>何の鍵か</th><th>作り直す場所</th></tr></thead><tbody><tr><td><code>GOOGLE_CLIENT_ID</code> / <code>GOOGLE_CLIENT_SECRET</code></td><td>Googleでログイン</td><td>Google Cloud → Google Auth Platform → クライアント</td></tr><tr><td><code>LINE_CHANNEL_SECRET</code></td><td>LINE からの通知が本物かの確認</td><td>LINE Developers → チャネル基本設定</td></tr><tr><td><code>LINE_CHANNEL_ACCESS_TOKEN</code></td><td>LINE へ送る許可</td><td>LINE Developers → Messaging API設定</td></tr></tbody></table></div>
+<p>鍵の登録・入れ替えは、PC のターミナルで <code>npx.cmd wrangler secret put 名前</code> を実行して値を貼り付けます（<a href="#5-直したいとき後任のpcで">5章</a>）。</p>
+<h2 id="3-年度替わりにやること">3. 年度替わりにやること</h2>
+<ul class="checks"><li><label><input type="checkbox" /> 終わったイベントを「終了」にする（イベントの「編集」→ 一番下）。サイドバーの「過去資料」に年度ごとに入ります</label></li><li><label><input type="checkbox" /> 新しいイベントは「＋ 新規」→「過去資料から作る」で去年のものを選ぶと、準備タスクと当日の動きを引き継げます</label></li><li><label><input type="checkbox" /> イベント担当（人）は毎年変わるので、各イベントの「編集」で入れ直す</label></li><li><label><input type="checkbox" /> 幹部の LINE グループが新しくなったら、ボットを招待して「LINE連携」から連携し直す</label></li><li><label><input type="checkbox" /> 共有Googleアカウントのパスワードを変えたら、非公開の引継ぎ資料も更新</label></li><li><label><input type="checkbox" /> 念のため、アカウントメニュー →「データを書き出す」で1年分のバックアップを保存（共有ドライブなど）</label></li></ul>
+<h2 id="4-困ったとき">4. 困ったとき</h2>
+<div class="table"><table><thead><tr><th>症状</th><th>まず確認すること</th><th>直し方</th></tr></thead><tbody><tr><td>アプリが開かない・真っ白</td><td>別のスマホやPCでも同じか / <a href="https://www.cloudflarestatus.com">https://www.cloudflarestatus.com</a> に障害が出ていないか</td><td>Cloudflare 側の障害なら待つ。続くなら Cloudflare の <code>flicktask</code> → ログ（Observability）を見る</td></tr><tr><td>「Googleでログイン」で失敗する</td><td>Google Cloud のクライアントが消えていないか、Search Console の確認が外れていないか</td><td>クライアントを作り直したら鍵2つを入れ替える（2章）</td></tr><tr><td>LINE ボットが返事しない</td><td>LINE Developers の「Messaging API設定」で Webhook の「検証」が成功するか</td><td>失敗するなら <code>LINE_CHANNEL_SECRET</code> が違う。アクセストークンを再発行したら <code>LINE_CHANNEL_ACCESS_TOKEN</code> を入れ替える</td></tr><tr><td>月曜の LINE まとめが来ない</td><td>その週に締切も予定もないと送りません。LINE公式アカウントの無料枠（月200通）が尽きていないか</td><td>枠は「通知1回 × グループ人数」で減ります。翌月に戻ります</td></tr><tr><td>カレンダー連携に反映されない</td><td>Googleカレンダーは数時間おきにしか取りに来ません</td><td>半日待つ。URL が漏れたら「カレンダー連携」→「URLを作り直す」</td></tr><tr><td>データを間違って消した</td><td>消した直後ならアプリの「元に戻す」</td><td>Cloudflare D1 には過去の時点に戻す機能（Time Travel）があります。README のコマンドと Cloudflare のドキュメントを見ながら、慎重に</td></tr><tr><td>有料の請求が来た</td><td>基本はすべて無料プランの範囲で動いています</td><td>Cloudflare の「請求」でカードが登録されていないか確認</td></tr></tbody></table></div>
+<h2 id="5-直したいとき後任のpcで">5. 直したいとき（後任のPCで）</h2>
+<p>機能を変えたり不具合を直したりするときは、PC に <strong>Claude Code</strong>（AI のプログラミング助手）を入れて、日本語で頼むのが一番早いです。<br />このリポジトリには、プログラムと一緒に動作確認用のテスト（<code>tests/</code>）が入っているので、直したあと壊れていないかを確かめられます。</p>
+<h3 id="最初の1回だけ準備">最初の1回だけ（準備）</h3>
+<ol><li><strong>Node.js</strong>（LTS 版）をインストール … <a href="https://nodejs.org/">https://nodejs.org/</a></li><li><strong>Git</strong> をインストール … <a href="https://git-scm.com/">https://git-scm.com/</a></li><li><strong>Claude Code</strong> をインストール … <a href="https://claude.com/claude-code">https://claude.com/claude-code</a></li><li>このリポジトリを手元にコピー: <code>git clone https://github.com/CIT-taa-event/flicktask.git</code></li><li>コピーしたフォルダで <code>npm install</code></li><li>手元用の設定ファイルを作る: <code>.dev.vars.example</code> をコピーして、名前を <code>.dev.vars</code> にする（中身はそのままでOK。本物の鍵は入れない）</li><li>手元のデータベースを作る: <code>npm run db:migrate:local</code></li><li>テスト用のブラウザを入れる: <code>npx.cmd playwright install chromium</code></li><li>Cloudflare に<strong>管理用の共有アカウント</strong>でログイン: <code>npx.cmd wrangler login</code>（ブラウザで「許可」を押す）</li><li>動作確認: <code>npm test</code> がすべて通れば準備完了（10分ほどかかります）</li></ol>
+<p>Windows の PowerShell では <code>npx</code> が安全設定で止められることがあるので、<code>npx.cmd</code> と打ってください。<br />Claude Code を使うには、Claude の有料プラン（Pro など）か API の契約が必要です。誰の契約で使うかは幹部で決めてください。</p>
+<h3 id="直すときの流れ">直すときの流れ</h3>
+<ol><li>Claude Code をこのフォルダで開き、「〇〇を△△に変えて。README.md と docs/HANDOVER.md を読んでから」と頼む</li><li>手元で動かして確認（<code>npm run dev</code> → ブラウザで <a href="http://localhost:5173">http://localhost:5173</a> ）</li><li>テストを通す（<code>npm test</code>）</li><li>データベースの形を変えた場合だけ: <code>npm run db:migrate:remote</code></li><li>本番に反映: <code>npm run deploy</code></li><li>本番の確認テスト: <code>BASE_URL=https://flicktask.junjun-tama.workers.dev npx.cmd playwright test</code></li><li>GitHub に保存: <code>git add -A</code> → <code>git commit -m &amp;quot;何を変えたか&amp;quot;</code> → <code>git push</code></li></ol>
+<p>うまくいかなかったら、<code>npm run deploy</code> の前なら本番には影響しません。反映後に問題が出たら、Cloudflare の <code>flicktask</code> → デプロイ から1つ前の版に戻せます。</p>
+<h2 id="6-アプリでできること覚え書き">6. アプリでできること（覚え書き）</h2>
+<ul><li><strong>ホーム</strong>: これからの流れ（全イベントの締切の流れ）／やること（イベントごとに折りたたみ。締切1か月以内と、着手目安日1週間以内の未着手）／直近の予定</li><li><strong>イベント画面</strong>: 準備（未着手・進行中・完了のボード、担当別タイムライン）／当日の動き（当日モード）／予定／メモ（昨年の申し送りが横に出る）</li><li><strong>着手目安日</strong>: その日になると、未着手のタスクは自動で進行中へ（その日に手で戻したものはそのまま）</li><li><strong>カレンダー</strong>: 日付をタップでその日の時間割。空いている時間や「終日」から、イベントに入らない予定も追加できる</li><li><strong>LINE</strong>: 「やること」「今週」、イベント名（一部でも可）で返事。毎週月曜10時に今週のまとめ</li><li><strong>カレンダー連携</strong>: Googleカレンダー / iPhone のカレンダーに本番・予定・締切を表示（ウィジェットにも出る）</li><li><strong>過去資料</strong>: 終了したイベントを年度ごとに保管。新しいイベントを作るときに引き継げる</li></ul>
+<h2 id="7-引継ぎの状況2026年12月">7. 引継ぎの状況（2026年12月）</h2>
+<div class="table"><table><thead><tr><th>項目</th><th>状況</th></tr></thead><tbody><tr><td>Google Search Console に管理用アカウントの確認ファイル</td><td>済（11/26）</td></tr><tr><td>Google Cloud のオーナーに管理用アカウント・ブランディングの連絡先</td><td>済（11/26）</td></tr><tr><td>Cloudflare に管理用アカウント（Super Administrator）</td><td>済（11/26）</td></tr><tr><td>GitHub を組織 <code>CIT-taa-event</code> へ移動</td><td>済（11/26）</td></tr><tr><td>LINE 公式アカウント</td><td>共有メールで作成済み</td></tr><tr><td>プライバシーポリシー・利用規約の連絡先を共有メールへ</td><td>済（11/26）</td></tr><tr><td>後任のPC準備と、後任だけでの更新・反映</td><td>未（12月中旬）</td></tr><tr><td>作成者のアクセスを各サービスから外す</td><td>未（12/31）</td></tr></tbody></table></div>
+<h2 id="8-管理者の交代メモ">8. 管理者の交代メモ</h2>
+<div class="table"><table><thead><tr><th>時期</th><th>管理者</th><th>メモ</th></tr></thead><tbody><tr><td>〜2026年12月</td><td>初代（作成者）</td><td>作成・運用開始</td></tr><tr><td>2027年1月〜</td><td>（後任の名前を書く）</td><td></td></tr></tbody></table></div>
+</main>
+<p class="foot">docs/HANDOVER.md から作成（2026/11/26）。内容を変えるときは .md を直して <code>npm run handover:html</code></p>
+</div>
+</body>
+</html>

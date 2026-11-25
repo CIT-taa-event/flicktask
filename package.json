@@ -9,7 +9,8 @@
     "db:migrate:local": "wrangler d1 migrations apply flicktask-db --local",
     "db:migrate:remote": "wrangler d1 migrations apply flicktask-db --remote",
     "deploy": "npm run build && wrangler deploy",
-    "test": "playwright test"
+    "test": "playwright test",
+    "handover:html": "node scripts/handover-html.mjs"
   },
   "license": "ISC",
   "type": "module",
