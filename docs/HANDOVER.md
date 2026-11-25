@@ -16,14 +16,16 @@
 
 ## 2. どこに何があるか
 
-すべて **幹部の共有Googleアカウント** で入れるようにしてあります（2段階認証は、ログイン中の全員のスマホに確認が届きます）。
+すべて **幹部の管理用の共有Googleアカウント** で入れるようにしてあります。
+大学の組織アカウントは Search Console などが使えないため、管理には組織の制限がない方の共有アカウントを使っています（どちらのアカウントかは非公開の引継ぎ資料に記載）。
+アプリへのログイン自体は、普段の共有アカウントで構いません。
 
 | サービス | 何をしているか | 入り口 |
 |---|---|---|
 | Cloudflare | アプリ本体・データベース（D1）・自動処理・各種の鍵 | https://dash.cloudflare.com → Workers & Pages → `flicktask` |
 | Google Cloud | 「Googleでログイン」の設定（OAuth クライアント） | https://console.cloud.google.com → プロジェクト番号 886333017912 → Google Auth Platform |
 | Google Search Console | ログイン設定に必要な「サイトの持ち主」の証明 | https://search.google.com/search-console → `https://flicktask.junjun-tama.workers.dev/` |
-| GitHub | プログラムの保管場所（このリポジトリ） | https://github.com/ |
+| GitHub | プログラムの保管場所（このリポジトリ） | https://github.com/CIT-taa-event/flicktask （組織 `CIT-taa-event` の持ち主は管理用アカウント） |
 | LINE Developers / Official Account Manager | LINE ボット「タスク本部」 | https://developers.line.biz/console/ ・ https://manager.line.biz/ |
 
 アプリの URL（`junjun-tama.workers.dev`）は作った人の名前が入っていますが、**変えないでください**。
@@ -72,7 +74,7 @@ Cloudflare の `flicktask` → 設定 → 変数とシークレット に入っ�
 1. **Node.js**（LTS 版）をインストール … https://nodejs.org/
 2. **Git** をインストール … https://git-scm.com/
 3. **Claude Code** をインストール … https://claude.com/claude-code
-4. このリポジトリを手元にコピー: `git clone <このリポジトリのURL>`
+4. このリポジトリを手元にコピー: `git clone https://github.com/CIT-taa-event/flicktask.git`
 5. コピーしたフォルダで `npm install`
 6. Cloudflare に共有アカウントでログイン: `npx.cmd wrangler login`（ブラウザで「許可」を押す）
 
@@ -100,7 +102,20 @@ Windows の PowerShell では `npx` が安全設定で止められることが�
 - **カレンダー連携**: Googleカレンダー / iPhone のカレンダーに本番・予定・締切を表示（ウィジェットにも出る）
 - **過去資料**: 終了したイベントを年度ごとに保管。新しいイベントを作るときに引き継げる
 
-## 7. 管理者の交代メモ
+## 7. 引継ぎの状況（2026年12月）
+
+| 項目 | 状況 |
+|---|---|
+| Google Search Console に管理用アカウントの確認ファイル | 済（11/26） |
+| Google Cloud のオーナーに管理用アカウント・ブランディングの連絡先 | 済（11/26） |
+| Cloudflare に管理用アカウント（Super Administrator） | 済（11/26） |
+| GitHub を組織 `CIT-taa-event` へ移動 | 済（11/26） |
+| LINE 公式アカウント | 共有メールで作成済み |
+| プライバシーポリシー・利用規約の連絡先を共有メールへ | 未 |
+| 後任のPC準備と、後任だけでの更新・反映 | 未（12月中旬） |
+| 作成者のアクセスを各サービスから外す | 未（12/31） |
+
+## 8. 管理者の交代メモ
 
 | 時期 | 管理者 | メモ |
 |---|---|---|
