@@ -76,9 +76,14 @@ Cloudflare の `flicktask` → 設定 → 変数とシークレット に入っ�
 3. **Claude Code** をインストール … https://claude.com/claude-code
 4. このリポジトリを手元にコピー: `git clone https://github.com/CIT-taa-event/flicktask.git`
 5. コピーしたフォルダで `npm install`
-6. Cloudflare に共有アカウントでログイン: `npx.cmd wrangler login`（ブラウザで「許可」を押す）
+6. 手元用の設定ファイルを作る: `.dev.vars.example` をコピーして、名前を `.dev.vars` にする（中身はそのままでOK。本物の鍵は入れない）
+7. 手元のデータベースを作る: `npm run db:migrate:local`
+8. テスト用のブラウザを入れる: `npx.cmd playwright install chromium`
+9. Cloudflare に**管理用の共有アカウント**でログイン: `npx.cmd wrangler login`（ブラウザで「許可」を押す）
+10. 動作確認: `npm test` がすべて通れば準備完了（10分ほどかかります）
 
 Windows の PowerShell では `npx` が安全設定で止められることがあるので、`npx.cmd` と打ってください。
+Claude Code を使うには、Claude の有料プラン（Pro など）か API の契約が必要です。誰の契約で使うかは幹部で決めてください。
 
 ### 直すときの流れ
 

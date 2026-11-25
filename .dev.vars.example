@@ -1,0 +1,7 @@
+# Local development only. Copy this file to .dev.vars (which git ignores) before `npm run dev` / `npm test`.
+# Never put real keys here: the real Google / LINE keys live only in Cloudflare (npx.cmd wrangler secret put ...).
+
+# enables /auth/dev-login on localhost, which the test suite uses in place of Google sign-in
+DEV_LOGIN=1
+# lets the test suite sign fake LINE webhooks (a made-up value, not the real channel secret)
+LINE_CHANNEL_SECRET=local-test-line-secret
