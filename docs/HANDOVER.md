@@ -5,6 +5,7 @@
 
 - アプリ: https://flicktask.junjun-tama.workers.dev
 - 技術的な詳細（構成・開発・デプロイのコマンド）: [README.md](../README.md)
+- 情報の流れの図（初めての人向け）: [docs/FLOW.html](FLOW.html)
 
 ---
 

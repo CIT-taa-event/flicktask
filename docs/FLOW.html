@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Task本部 データの流れ</title>
+<!-- 初学者向けの「情報の流れ」の図。docs/HANDOVER.md から参照。中身を変えたら図も直すこと。 -->
+<style>
+  :root {
+    --bg: #f6f6f6; --paper: #fff; --text: #1b1b1b; --sub: #555; --muted: #8a8a8a; --line: #e2e2e2;
+    --cf: #f38020; --cf-bg: #fff4ea; --you: #2f5fd0; --you-bg: #eef3ff; --ext: #2a9d6f; --ext-bg: #eaf7f1; --gh: #6e40c9; --gh-bg: #f3eefc;
+    --arrow: #4a4a4a; --label-bg: #fff; --box: #fff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0b0b0b; --paper: #151515; --text: #ececec; --sub: #b4b4b4; --muted: #808080; --line: #2a2a2a;
+      --cf: #ff9a45; --cf-bg: #2a1a0c; --you: #8ea8ff; --you-bg: #141c33; --ext: #4fd19d; --ext-bg: #0f2a20; --gh: #b39af0; --gh-bg: #221a33;
+      --arrow: #bdbdbd; --label-bg: #151515; --box: #1c1c1c;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.8 "Noto Sans JP", "Hiragino Sans", "Yu Gothic UI", "Meiryo", system-ui, sans-serif; }
+  .wrap { max-width: 1060px; margin: 0 auto; padding: 32px 16px 64px; }
+  .paper { background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 32px 36px; }
+  h1 { margin: 0 0 6px; font-size: 26px; line-height: 1.4; }
+  h2 { margin: 36px 0 10px; padding-bottom: 6px; font-size: 20px; border-bottom: 2px solid var(--line); }
+  p { margin: 8px 0; }
+  .lead { color: var(--sub); }
+  .key { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 14px 0 4px; font-size: 13.5px; }
+  .key span { display: inline-flex; align-items: center; gap: 7px; }
+  .key i { width: 16px; height: 16px; border-radius: 5px; border: 2px solid; }
+  .k-you i { border-color: var(--you); background: var(--you-bg); }
+  .k-cf i { border-color: var(--cf); background: var(--cf-bg); }
+  .k-ext i { border-color: var(--ext); background: var(--ext-bg); }
+  .k-gh i { border-color: var(--gh); background: var(--gh-bg); }
+  .fig { overflow-x: auto; margin: 10px -8px; padding: 0 8px; }
+  .fig svg { display: block; width: 100%; min-width: 760px; height: auto; }
+  .swipe { display: none; margin: 4px 0 0; font-size: 12px; color: var(--muted); text-align: center; }
+  @media (max-width: 800px) { .swipe { display: block; } }
+  .note { margin: 12px 0; padding: 12px 16px; border-radius: 12px; background: var(--gh-bg); border-left: 4px solid var(--gh); font-size: 14px; }
+  ol.steps { padding-left: 1.4em; }
+  ol.steps li { margin: 6px 0; }
+  .num { display: inline-grid; place-items: center; width: 22px; height: 22px; margin-right: 4px; border-radius: 50%; font-size: 12px; font-weight: 800; color: #fff; background: var(--arrow); vertical-align: 1px; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; margin: 10px 0; }
+  th, td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+  th { background: var(--bg); white-space: nowrap; }
+  .tw { overflow-x: auto; }
+  .foot { margin-top: 18px; font-size: 12px; color: var(--muted); text-align: center; }
+  /* SVG parts */
+  svg text { font-family: inherit; fill: var(--text); }
+  .t-title { font-size: 17px; font-weight: 800; }
+  .t-sub { font-size: 12.5px; fill: var(--sub); }
+  .t-lbl { font-size: 12.5px; font-weight: 700; paint-order: stroke; stroke: var(--label-bg); stroke-width: 6px; stroke-linejoin: round; }
+  .t-area { font-size: 15px; font-weight: 800; }
+  .n-you { fill: var(--you-bg); stroke: var(--you); stroke-width: 2; }
+  .n-cf-area { fill: var(--cf-bg); stroke: var(--cf); stroke-width: 2.5; stroke-dasharray: 8 6; }
+  .n-cf { fill: var(--box); stroke: var(--cf); stroke-width: 2; }
+  .n-ext { fill: var(--ext-bg); stroke: var(--ext); stroke-width: 2; }
+  .n-gh { fill: var(--gh-bg); stroke: var(--gh); stroke-width: 2; }
+  .a { fill: none; stroke: var(--arrow); stroke-width: 2.2; }
+  .a.dash { stroke-dasharray: 6 5; }
+  .badge circle { fill: var(--arrow); }
+  .badge text { fill: var(--paper); font-size: 12px; font-weight: 800; text-anchor: middle; dominant-baseline: central; }
+  @media (max-width: 640px) { .paper { padding: 22px 14px; } h1 { font-size: 22px; } }
+  @media print { body { background: #fff; } .wrap { padding: 0; max-width: none; } .paper { border: 0; padding: 0; } .fig svg { min-width: 0; } h2 { break-after: avoid; } .fig { break-inside: avoid; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+<main class="paper">
+<h1>Task本部 データの流れ</h1>
+<p class="lead">アプリを使うとき、情報がどこを通ってどこに保存されるかの図です。<br />大事なのは、<b>「使うとき」に通るのは Cloudflare だけ</b>で、<b>GitHub は「直すとき」にしか出てこない</b>ことです。</p>
+<div class="key">
+  <span class="k-you"><i></i>利用者の手元（スマホ・PC・LINE・カレンダー）</span>
+  <span class="k-cf"><i></i>Cloudflare（アプリ本体とデータ）</span>
+  <span class="k-ext"><i></i>外部のサービス（Google・LINE）</span>
+  <span class="k-gh"><i></i>GitHub（プログラムの保管場所）</span>
+</div>
+
+<h2>1. 使うとき（毎日の流れ）</h2>
+<p class="swipe">← 図は横にスクロールできます →</p>
+<div class="fig">
+<svg viewBox="0 0 1000 640" role="img" aria-label="使うときのデータの流れ。利用者のブラウザ、LINE、カレンダーは、すべて Cloudflare のアプリ本体とやり取りし、データは Cloudflare のデータベースに保存される。ログインは Google、LINE の送受信は LINE のサーバーを通る。">
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--arrow)" /></marker>
+  </defs>
+
+  <!-- Cloudflare area -->
+  <rect class="n-cf-area" x="300" y="150" width="400" height="460" rx="18" />
+  <text class="t-area" x="320" y="180" style="fill: var(--cf)">Cloudflare（クラウドフレア）</text>
+  <text class="t-sub" x="320" y="200">24時間動いているサーバー。ここが本体</text>
+
+  <rect class="n-cf" x="390" y="225" width="220" height="74" rx="12" />
+  <text class="t-title" x="500" y="256" text-anchor="middle">アプリ本体</text>
+  <text class="t-sub" x="500" y="279" text-anchor="middle">Workers ／ 画面とやり取りの窓口</text>
+
+  <rect class="n-cf" x="322" y="400" width="170" height="74" rx="12" />
+  <text class="t-title" x="407" y="431" text-anchor="middle">データベース</text>
+  <text class="t-sub" x="407" y="454" text-anchor="middle">D1 ／ 全データの本物</text>
+
+  <rect class="n-cf" x="508" y="400" width="170" height="74" rx="12" />
+  <text class="t-title" x="593" y="431" text-anchor="middle">AI</text>
+  <text class="t-sub" x="593" y="454" text-anchor="middle">Workers AI ／「AIで分解」</text>
+
+  <rect class="n-cf" x="322" y="510" width="170" height="74" rx="12" />
+  <text class="t-title" x="407" y="541" text-anchor="middle">即時反映</text>
+  <text class="t-sub" x="407" y="564" text-anchor="middle">Durable Objects</text>
+
+  <rect class="n-cf" x="508" y="510" width="170" height="74" rx="12" />
+  <text class="t-title" x="593" y="541" text-anchor="middle">定期実行</text>
+  <text class="t-sub" x="593" y="564" text-anchor="middle">毎朝3時・月曜10時</text>
+
+  <!-- left: the user's side -->
+  <rect class="n-you" x="20" y="215" width="220" height="96" rx="14" />
+  <text class="t-title" x="130" y="247" text-anchor="middle">幹部のスマホ・PC</text>
+  <text class="t-sub" x="130" y="270" text-anchor="middle">ブラウザで Task本部を開く</text>
+  <text class="t-sub" x="130" y="290" text-anchor="middle">端末にもデータの写しを保存</text>
+
+  <rect class="n-you" x="20" y="530" width="220" height="80" rx="14" />
+  <text class="t-title" x="130" y="562" text-anchor="middle">カレンダーアプリ</text>
+  <text class="t-sub" x="130" y="586" text-anchor="middle">Googleカレンダー・iPhone</text>
+
+  <!-- right: outside services -->
+  <rect class="n-ext" x="390" y="20" width="220" height="80" rx="14" />
+  <text class="t-title" x="500" y="52" text-anchor="middle">Google</text>
+  <text class="t-sub" x="500" y="76" text-anchor="middle">「Googleでログイン」の確認だけ</text>
+
+  <rect class="n-ext" x="760" y="225" width="220" height="80" rx="14" />
+  <text class="t-title" x="870" y="257" text-anchor="middle">LINE のサーバー</text>
+  <text class="t-sub" x="870" y="281" text-anchor="middle">Messaging API</text>
+
+  <rect class="n-you" x="760" y="420" width="220" height="86" rx="14" />
+  <text class="t-title" x="870" y="452" text-anchor="middle">幹部の LINE グループ</text>
+  <text class="t-sub" x="870" y="476" text-anchor="middle">ボット「タスク本部」</text>
+
+  <!-- arrows -->
+  <!-- 1 browser <-> app -->
+  <path class="a" d="M240 252 H388" marker-start="url(#ah)" marker-end="url(#ah)" />
+  <text class="t-lbl" x="314" y="244" text-anchor="middle">タスクの読み書き</text>
+  <!-- 2 login -->
+  <path class="a" d="M150 213 C150 120 260 60 388 60" marker-end="url(#ah)" />
+  <text class="t-lbl" x="200" y="112">ログイン</text>
+  <path class="a" d="M500 102 V223" marker-end="url(#ah)" />
+  <text class="t-lbl" x="508" y="132">本人確認の結果</text>
+  <!-- 3 app <-> db -->
+  <path class="a" d="M450 301 L420 398" marker-start="url(#ah)" marker-end="url(#ah)" />
+  <text class="t-lbl" x="420" y="362" text-anchor="end">保存・読み出し</text>
+  <!-- 4 app <-> AI -->
+  <path class="a" d="M550 301 L580 398" marker-start="url(#ah)" marker-end="url(#ah)" />
+  <text class="t-lbl" x="604" y="352">押したときだけ</text>
+  <!-- 5 live: DO -> other devices -->
+  <path class="a dash" d="M320 547 H280 Q262 547 262 529 V318 Q262 300 244 300" marker-end="url(#ah)" />
+  <text class="t-lbl" x="250" y="420" text-anchor="end">他の端末へ</text>
+  <text class="t-lbl" x="250" y="438" text-anchor="end">「変わったよ」</text>
+  <!-- 6 calendar polls the feed -->
+  <path class="a" d="M242 575 H290 Q308 575 308 557 V316 Q308 296 328 294 L386 290" marker-end="url(#ah)" />
+  <text class="t-lbl" x="130" y="518" text-anchor="middle">数時間おきに予定を取りに来る</text>
+  <!-- 7 LINE -->
+  <path class="a" d="M870 418 V307" marker-end="url(#ah)" />
+  <text class="t-lbl" x="878" y="370">「やること」</text>
+  <path class="a" d="M758 250 H612" marker-end="url(#ah)" />
+  <text class="t-lbl" x="685" y="242" text-anchor="middle">届いた言葉</text>
+  <path class="a" d="M612 280 H758" marker-end="url(#ah)" />
+  <text class="t-lbl" x="685" y="300" text-anchor="middle">返事・まとめ</text>
+  <path class="a" d="M940 307 V418" marker-end="url(#ah)" />
+  <text class="t-lbl" x="948" y="370">返事</text>
+  <!-- 8 cron -->
+  <path class="a dash" d="M640 508 C700 460 690 330 612 285" marker-end="url(#ah)" />
+
+  <!-- badges -->
+  <g class="badge"><circle cx="314" cy="270" r="11" /><text x="314" y="270">1</text></g>
+  <g class="badge"><circle cx="172" cy="150" r="11" /><text x="172" y="150">2</text></g>
+  <g class="badge"><circle cx="440" cy="336" r="11" /><text x="440" y="336">3</text></g>
+  <g class="badge"><circle cx="566" cy="352" r="11" /><text x="566" y="352">4</text></g>
+  <g class="badge"><circle cx="262" cy="470" r="11" /><text x="262" y="470">5</text></g>
+  <g class="badge"><circle cx="308" cy="470" r="11" /><text x="308" y="470">6</text></g>
+  <g class="badge"><circle cx="720" cy="265" r="11" /><text x="720" y="265">7</text></g>
+  <g class="badge"><circle cx="694" cy="420" r="11" /><text x="694" y="420">8</text></g>
+</svg>
+</div>
+<ol class="steps">
+  <li><span class="num">1</span><b>タスクの読み書き</b>：画面で追加・変更したものは、まず端末に保存され、すぐに Cloudflare のアプリ本体へ送られます。電波がないときは端末に貯めておき、つながったら送ります。</li>
+  <li><span class="num">2</span><b>ログイン</b>：「Googleでログイン」は、Google に本人か確かめてもらうだけです。Google に送るのはログインの手続きだけで、タスクの中身は送りません。</li>
+  <li><span class="num">3</span><b>保存</b>：すべてのデータの本物は、Cloudflare のデータベース（D1）にあります。</li>
+  <li><span class="num">4</span><b>AI</b>：「AIで分解」を押したときだけ、そのメモを Cloudflare の中の AI に渡します。外の AI 会社には送りません。</li>
+  <li><span class="num">5</span><b>即時反映</b>：誰かが変更すると、同じアカウントで開いている他の端末に「変わったよ」と知らせ、画面が自動で更新されます。</li>
+  <li><span class="num">6</span><b>カレンダー連携</b>：Googleカレンダーや iPhone が、決まった URL へ数時間おきに予定を取りに来ます（こちらから送るのではなく、向こうが取りに来ます）。</li>
+  <li><span class="num">7</span><b>LINE</b>：グループで「やること」などと送ると、LINE のサーバーがアプリ本体に知らせ、アプリ本体が返事を LINE 経由で返します。</li>
+  <li><span class="num">8</span><b>定期実行</b>：毎朝3時（着手目安日の自動移動・古いデータの掃除）と、月曜10時（LINE の今週のまとめ）に、Cloudflare が自動で動きます。</li>
+</ol>
+
+<h2>2. 直すとき（管理者が機能を変えるとき）</h2>
+<p class="swipe">← 図は横にスクロールできます →</p>
+<div class="fig">
+<svg viewBox="0 0 1000 330" role="img" aria-label="直すときの流れ。管理者の PC で Claude Code と一緒にプログラムを直し、GitHub に保存し、Cloudflare に反映する。GitHub から Cloudflare へ自動では反映されない。">
+  <defs>
+    <marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--arrow)" /></marker>
+  </defs>
+  <rect class="n-you" x="330" y="110" width="300" height="110" rx="16" />
+  <text class="t-title" x="480" y="148" text-anchor="middle">管理者の PC</text>
+  <text class="t-sub" x="480" y="172" text-anchor="middle">プログラムの写しを持っている</text>
+  <text class="t-sub" x="480" y="194" text-anchor="middle">ここで直して、テストで確かめる</text>
+
+  <rect class="n-ext" x="20" y="120" width="220" height="90" rx="14" />
+  <text class="t-title" x="130" y="155" text-anchor="middle">Claude Code</text>
+  <text class="t-sub" x="130" y="179" text-anchor="middle">日本語で頼むと直してくれる AI</text>
+
+  <rect class="n-gh" x="740" y="20" width="240" height="90" rx="14" />
+  <text class="t-title" x="860" y="55" text-anchor="middle">GitHub</text>
+  <text class="t-sub" x="860" y="79" text-anchor="middle">プログラムの保管場所（控え）</text>
+
+  <rect class="n-cf" x="740" y="220" width="240" height="90" rx="14" style="fill: var(--cf-bg)" />
+  <text class="t-title" x="860" y="255" text-anchor="middle">Cloudflare</text>
+  <text class="t-sub" x="860" y="279" text-anchor="middle">動いているアプリが新しくなる</text>
+
+  <path class="a" d="M242 165 H328" marker-start="url(#ah2)" marker-end="url(#ah2)" />
+  <text class="t-lbl" x="285" y="155" text-anchor="middle">相談・修正</text>
+  <path class="a" d="M632 140 C690 140 690 65 738 65" marker-end="url(#ah2)" />
+  <text class="t-lbl" x="640" y="92">① 保存</text>
+  <text class="t-lbl" x="640" y="110" style="font-weight: 500">git push</text>
+  <path class="a" d="M632 190 C690 190 690 265 738 265" marker-end="url(#ah2)" />
+  <text class="t-lbl" x="640" y="236">② 反映</text>
+  <text class="t-lbl" x="640" y="254" style="font-weight: 500">npm run deploy</text>
+  <path class="a dash" d="M860 112 V218" />
+  <text class="t-lbl" x="870" y="160">自動ではつながって</text>
+  <text class="t-lbl" x="870" y="178">いない（別々に行う）</text>
+</svg>
+</div>
+<div class="note"><b>GitHub はアプリの動作には関係しません。</b>GitHub が止まっても Task本部はふつうに使えます。逆に、GitHub に保存しただけでは本番のアプリは変わらず、<code>npm run deploy</code> をしたときに初めて新しくなります。</div>
+
+<h2>3. どこに何が保存されるか</h2>
+<div class="tw">
+<table>
+  <thead><tr><th>場所</th><th>保存されるもの</th><th>消えたら</th></tr></thead>
+  <tbody>
+    <tr><td>Cloudflare D1（データベース）</td><td>タスク・イベント・予定・メモ・ログイン情報（Googleの名前とメール）・LINE連携先・カレンダー連携のURL</td><td><b>これが本物</b>。管理者向けの引継ぎ書「困ったとき」を参照</td></tr>
+    <tr><td>各端末のブラウザ</td><td>タスクの写し（よく使う範囲だけ）、表示の設定（ダーク・ライトなど）</td><td>次に開いたとき D1 から取り直すので問題なし</td></tr>
+    <tr><td>Cloudflare の設定（シークレット）</td><td>Google と LINE の鍵</td><td>Google Cloud・LINE Developers で作り直して登録し直す</td></tr>
+    <tr><td>GitHub</td><td>プログラムと引継ぎ書（データは入っていない）</td><td>管理者の PC にある写しから戻せる</td></tr>
+    <tr><td>Google</td><td>何も保存しない（ログインの確認だけ）</td><td>—</td></tr>
+    <tr><td>LINE</td><td>グループのトーク履歴（ボットの返事を含む。LINE の中に残る）</td><td>—</td></tr>
+  </tbody>
+</table>
+</div>
+<p class="foot">Task本部 管理者向け資料 ／ 機能を増やして流れが変わったら、この図（docs/FLOW.html）も直してください</p>
+</main>
+</div>
+</body>
+</html>

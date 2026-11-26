@@ -11,8 +11,8 @@ function inline(text) {
   const codes = [];
   let s = esc(text).replace(/`([^`]+)`/g, (_, c) => `\u0000${codes.push(c) - 1}\u0000`);
   s = s.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_, t, u) => {
-    // links inside the repo point at GitHub, so they work from the HTML file too
-    const href = /^(https?:|#)/.test(u) ? u : `https://github.com/CIT-taa-event/flicktask/blob/main/${u.replace(/^\.\.\//, '').replace(/^\.\//, 'docs/')}`;
+    // other .html pages sit next to this one in docs/, so stay relative; other repo files point at GitHub (paths are relative to docs/)
+    const href = /^(https?:|#)/.test(u) || /\.html$/.test(u) ? u : `https://github.com/CIT-taa-event/flicktask/blob/main/${u.startsWith('../') ? u.slice(3) : `docs/${u.replace(/^\.\//, '')}`}`;
     return `<a href="${href}">${t}</a>`;
   });
   s = s.replace(/(^|[\s（(])(https?:\/\/[^\s<）)]+)/g, (_, pre, u) => `${pre}<a href="${u}">${u}</a>`);
